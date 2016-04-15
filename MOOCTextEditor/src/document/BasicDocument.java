@@ -8,6 +8,9 @@ import java.util.List;
  */
 public class BasicDocument extends Document 
 {
+	private static final String REGEX_SENTENCE = "[^\\.!?]+([\\.!?]+|$)";
+	private static final String REGEX_WORD = "[A-Za-z]+";
+	
 	/** Create a new BasicDocument object
 	 * 
 	 * @param text The full text of the Document.
@@ -30,7 +33,8 @@ public class BasicDocument extends Document
 	{
 		//TODO: Implement this method.  See the Module 1 support videos 
 	    // if you need help.
-	    return 0;
+		List<String> words = getTokens(REGEX_WORD);
+	    return words.size();
 	}
 	
 	/**
@@ -46,7 +50,9 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+		
+		List<String> sentences = getTokens(REGEX_SENTENCE);
+        return sentences.size();
 	}
 	
 	/**
@@ -62,7 +68,13 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+		int count = 0;
+		List<String> words = getTokens(REGEX_WORD);
+		for ( String word : words )
+		{
+			count += countSyllables(word);
+		}
+        return count;
 	}
 	
 	

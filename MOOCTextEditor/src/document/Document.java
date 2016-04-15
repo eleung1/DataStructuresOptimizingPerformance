@@ -5,7 +5,10 @@ package document;
  * @author UC San Diego Intermediate Programming MOOC team
  */
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,7 +56,46 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 1) and 
 	    // EfficientDocument (module 2).
-	    return 0;
+		
+		int count = 0;
+		
+		if ( word != null )
+		{
+			Set<Character> vowels = new HashSet<Character>(Arrays.asList('a','e','i','o','u','y'));
+			String wordLowerCase = word.toLowerCase();
+			char[] chars = wordLowerCase.toCharArray();
+			
+			// counter for current string of vowels.
+			int currSyllableStringCount = 0;
+			for ( char c : chars )
+			{
+				if ( vowels.contains(c) )
+				{
+					// this char is a vowel. keeping track of the count as 1 syllable.
+					currSyllableStringCount = 1;
+				}
+				else
+				{
+					// this char is not a vowel.  if we have encountered a 
+					// string of vowels before this char, increase our total syllable count by 1.
+					count += currSyllableStringCount;
+					currSyllableStringCount=0;
+				}
+			}
+			// The case when the last char is a vowel.
+			count += currSyllableStringCount;
+			
+			// a lone "e" at the end of a word is not considered a syllable 
+			// unless the word has no other syllables.
+			if ( chars.length >= 2 && chars[chars.length-1] == 'e' 
+					&& !vowels.contains(chars[chars.length-2])
+					&& count >=2 )
+			{
+				count--;
+			}
+		}
+		
+		return count;
 	}
 	
 	/** A method for testing
@@ -117,7 +159,11 @@ public abstract class Document {
 	public double getFleschScore()
 	{
 	    // TODO: Implement this method
-	    return 0.0;
+		double numWords = getNumWords();
+		double numSentences = getNumSentences();
+		double numSyllables = getNumSyllables();
+		
+	    return 206.835 - 1.015*(numWords/numSentences) - 84.6*(numSyllables/numWords);
 	}
 	
 	
