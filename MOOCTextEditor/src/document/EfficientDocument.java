@@ -45,6 +45,35 @@ public class EfficientDocument extends Document {
 		
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.
+		boolean prevTokenIsWord = false;
+		for ( String token: tokens)
+		{
+		  if ( !isWord(token) )
+		  {
+		    if (prevTokenIsWord)
+		    {
+		      // currToken is a punctuation and prev Token is a word.  That means we have found a sentence.
+		      numSentences++;
+		    }
+		  }
+		  
+		  // Reset prev token's status to false.
+		  prevTokenIsWord = false;
+		  
+		  if ( isWord(token) )
+		  { 
+		    prevTokenIsWord = true;
+		    numWords++;
+		  }
+		  
+		  numSyllables += countSyllables(token);
+		}
+		
+		// Last token is a word.  Which means the text ended with a sentence with no punctuation.
+		if ( prevTokenIsWord )
+		{
+		  numSentences++;
+		}
 	}
 	
 	
@@ -58,7 +87,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-	    return 0;
+	    return numWords;
 	}
 
 	/**
@@ -72,7 +101,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+        return numSentences;
 	}
 
 	/**
@@ -86,7 +115,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+        return numSyllables;
 	}
 	
 	// Can be used for testing
