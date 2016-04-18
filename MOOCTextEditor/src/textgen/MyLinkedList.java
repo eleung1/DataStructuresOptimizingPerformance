@@ -17,16 +17,24 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	/** Create a new empty LinkedList */
 	public MyLinkedList() {
 		// TODO: Implement this method
+	  
+	  // Sentinel nodes
+	  head = new LLNode<E>(null);
+	  tail = new LLNode<E>(null);
+	  head.next = tail;
+	  tail.prev = head;
+	  size = 0;
 	}
 
 	/**
 	 * Appends an element to the end of the list
 	 * @param element The element to add
 	 */
-	public boolean add(E element ) 
+	public boolean add(E element) 
 	{
 		// TODO: Implement this method
-		return false;
+	  add(size, element);
+	  return true;
 	}
 
 	/** Get the element at position index 
@@ -34,9 +42,38 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E get(int index) 
 	{
 		// TODO: Implement this method.
-		return null;
+	  return getNode(index).data;
 	}
-
+	
+	/**
+	 * Helper method to get node at index.
+	 * 
+	 * @param index The index of the desired node.
+	 * @return The node at the desired index.
+	 */
+	private LLNode<E> getNode(int index)
+	{
+	  if ( index < 0 || index > (size -1 ) ) 
+    {
+      throw new IndexOutOfBoundsException();
+    }
+	  
+	  int count = 0;
+    LLNode<E> curr = head.next;
+    while ( curr != tail )
+    {
+      if ( count == index )
+      {
+        return curr;
+      }
+      
+      curr = curr.next;
+      count++;
+    }
+    
+    return null;
+	}
+	
 	/**
 	 * Add an element to the list at the specified index
 	 * @param The index where the element should be added
@@ -45,6 +82,35 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public void add(int index, E element ) 
 	{
 		// TODO: Implement this method
+	  if ( index < 0 || index > size )
+	  {
+	    throw new IndexOutOfBoundsException();
+	  }
+	  
+	  // Create the new node
+	  LLNode<E> newNode = new LLNode<E>(element);
+    
+	  // index = size means insert at the end of the list
+	  if ( index == size )
+	  {
+	    tail.prev.next = newNode;
+	    newNode.prev = tail.prev;
+	    tail.prev = newNode;
+	    newNode.next = tail;
+	  }
+	  else if ( index < size)
+	  {
+	    // insert new node in the specified index and shift the rest of the elements down
+	    LLNode<E> existingNode = getNode(index);
+	    
+	    existingNode.prev.next = newNode;
+	    newNode.prev = existingNode.prev;
+	    existingNode.prev = newNode;
+	    newNode.next = existingNode; 
+	  }
+	  
+	  size++;
+	  
 	}
 
 
@@ -52,7 +118,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public int size() 
 	{
 		// TODO: Implement this method
-		return -1;
+		return size;
 	}
 
 	/** Remove a node at the specified index and return its data element.
@@ -64,7 +130,12 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E remove(int index) 
 	{
 		// TODO: Implement this method
-		return null;
+	  LLNode<E> deadNode = getNode(index);
+	  deadNode.prev.next = deadNode.next;
+	  deadNode.next.prev = deadNode.prev;
+	  size--;
+	  
+		return deadNode.data;
 	}
 
 	/**
@@ -77,7 +148,10 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E set(int index, E element) 
 	{
 		// TODO: Implement this method
-		return null;
+	  LLNode<E> currNode = getNode(index);
+	  E oldData = currNode.data;
+	  currNode.data = element;
+		return oldData;
 	}   
 }
 
