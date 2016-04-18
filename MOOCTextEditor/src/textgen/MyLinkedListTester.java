@@ -140,6 +140,16 @@ public class MyLinkedListTester
       
     }
     
+    try
+    {
+      emptyList.remove(-1);
+      fail("Check out of bounds");
+    }
+    catch ( IndexOutOfBoundsException e )
+    {
+      
+    }
+    
     Integer fifthNodeValue = longerList.remove(4);
     assertEquals((Integer)4, fifthNodeValue);
     assertEquals((Integer)5, longerList.get(4));
@@ -214,6 +224,16 @@ public class MyLinkedListTester
       
     }
     
+    try
+    {
+      emptyList.remove(-1);
+      fail("Check out of bounds");
+    }
+    catch ( IndexOutOfBoundsException e )
+    {
+      
+    }
+    
     // Adding to the first of an emptyList
     emptyList.add(0, 999);
     LLNode<Integer> first = emptyList.head.next;
@@ -228,6 +248,26 @@ public class MyLinkedListTester
     assertEquals((Integer)999, longerList.get(4));
     assertEquals((Integer)3, longerList.get(3));
     assertEquals((Integer)4, longerList.get(5));
+    
+    try
+    {
+      longerList.add(0, null);
+      fail("Check for adding null element.");
+    }
+    catch (NullPointerException e)
+    {
+      
+    }
+    
+    try
+    {
+      longerList.add(-1, 999);
+      fail("Check for out of bounds.");
+    }
+    catch (IndexOutOfBoundsException e)
+    {
+      
+    }
   }
 
   /** Test setting an element in the list */
@@ -241,6 +281,16 @@ public class MyLinkedListTester
       fail("Check out of bounds");
     }
     catch ( IndexOutOfBoundsException e)
+    {
+      
+    }
+    
+    try
+    {
+      longerList.set(0, null);
+      fail("Check for adding null element.");
+    }
+    catch (NullPointerException e)
     {
       
     }
