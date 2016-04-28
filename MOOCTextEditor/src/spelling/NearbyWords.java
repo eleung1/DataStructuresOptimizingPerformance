@@ -151,6 +151,11 @@ public class NearbyWords implements SpellingSuggest {
 		      {
 		        retList.add(s);
 		      }
+		      
+		      if ( visited.size() > THRESHOLD )
+		      {
+		        break;
+		      }
 		    }
 		  }
 		}
